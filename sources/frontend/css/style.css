@@ -1,15 +1,33 @@
-html,
-body {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-}
-
 #div-scoreboard {
-  background-image: url("../../../data/backgrounds/Typewriter.png");
+  background-image: url("../../../data/backgrounds/Typewriter.webp");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+}
+
+.overlay-black {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100vh;
+  width: 100vw;
+  z-index: 10;
+  background-color: rgba(0,0,0,1.0);
+  animation-name: fadeIn;
+  animation-duration: 1.0s;
+  overflow:hidden;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    background-color: rgba(0,0,0,1.0);
+  }
+
+  to {
+    background-color: rgba(0,0,0,0.0);
+  }
 }
 
 #div-scoreboard-2 {

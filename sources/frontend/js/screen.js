@@ -6,8 +6,6 @@
 (function() {
 	var contestantsList = []
 
-	// var main = document.querySelector("#div-scoreboard")
-
 	function addContestant(imagePath, id, score) {
 		var contestant = {}
 
@@ -30,7 +28,6 @@
 
 		var frameContainer = document.createElement("div")
 		frameContainer.classList.add("frame-container")
-		frameContainer.style.webkitAnimationDelay = -id * 1.25 + "s"
 		frameContainer.style.animationDelay = -id * 1.25 + "s"
 
 		var fill = document.createElement("div")
@@ -221,6 +218,7 @@
     }).file_source
 
     function showDiv(name) {
+		console.log("showDiv ",name);
         document.querySelector("#div-" + name).style.display = "block"
         document.querySelectorAll(".div-containers").forEach(cont => {
             if (!cont.id.includes(name) && !cont.id.includes("taskmaster")) {
@@ -231,7 +229,13 @@
             document.querySelector("#video").pause()
         }
     }
-
+	function showTaskmaster() {
+		showDiv("taskmaster")
+		let el = document.getElementsByClassName("overlay-black")[0];
+		el.style.animation = 'none';
+		el.offsetHeight; /* trigger reflow */
+		el.style.animation = null; 
+	}
     var audio = null
 
     function playSound(file) {
@@ -279,7 +283,8 @@
             showDiv("scoreboard")
         } else if (action == "showVideo") {
 
-            document.querySelector("#video-src").setAttribute('src', content[1])
+            document.querySelector("#video-src").setAttribute('src', "/video/"+content[1].slice(2))
+			console.log("Showing video: ", content[1])
 
             document.querySelector("#video").load()
             document.querySelector("#video").currentTime = 0
@@ -290,7 +295,7 @@
             }
 
             document.getElementById('video').addEventListener('ended', function(e) {
-                showDiv("taskmaster")
+				showTaskmaster()
             }, false)
 
             document.getElementById('video').addEventListener('playing', function(e) {
@@ -298,7 +303,7 @@
             }, false)
             
         } else if (action == "showTaskmaster") {
-            showDiv("taskmaster")
+			showTaskmaster()
         } else if (action == "resetScores") {
             window.location.reload(true)
         } else if (action == "playSound") {

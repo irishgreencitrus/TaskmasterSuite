@@ -1,5 +1,5 @@
 from tinydb import TinyDB, Query
-from tm_suite import helper
+import helper
 import ujson
 
 contestants = TinyDB(helper.find_root() + "/sources/db/contestants.json")

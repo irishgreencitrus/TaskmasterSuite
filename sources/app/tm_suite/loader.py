@@ -1,13 +1,13 @@
 import os
-from tm_suite import helper
-from tm_suite import db
+import helper
+import db
 import ujson
 
 
-ALLOWED_IMG_EXTENSIONS = (".jpg", ".png", ".jpeg", ".bmp", ".gif")
-ALLOWED_VID_EXTENSIONS = (".mp4",)
+ALLOWED_IMG_EXTENSIONS = (".jpg", ".png", ".jpeg", ".bmp", ".gif", ".webp",)
+ALLOWED_VID_EXTENSIONS = (".mp4",".mov",".webm",)
 ALLOWED_TXT_EXTENSIONS = (".txt",)
-ALLOWED_SND_EXTENSIONS = (".mp3",)
+ALLOWED_SND_EXTENSIONS = (".mp3",".wav",".opus",)
 
 ALL_ALLOWED_EXTENSIONS = ALLOWED_VID_EXTENSIONS + ALLOWED_IMG_EXTENSIONS + \
     ALLOWED_TXT_EXTENSIONS + ALLOWED_SND_EXTENSIONS

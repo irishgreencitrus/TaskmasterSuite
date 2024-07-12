@@ -1,13 +1,15 @@
 import threading
 from typing import List
 from fastapi import FastAPI, WebSocket, Response
+from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.websockets import WebSocketDisconnect
 import uvicorn
 import multiprocessing
-from tm_suite.loader import generate_files
-from tm_suite import helper
-from tm_suite import db
+from loader import generate_files
+import helper
+import db
+import os
 import easygui
 import ujson
 import asyncio
@@ -36,6 +38,26 @@ class ConnectionManager:
 manager = ConnectionManager()
 
 app.mount("/home/", StaticFiles(directory=helper.find_root()), name="static")
+
+@app.get("/video/{path:path}")
+async def get_video(path: str):
+    if path == "":
+        return Response(status_code=400)
+    if not os.path.exists(path):
+        return Response(status_code=400)
+    file_size = os.path.getsize(path)
+    def iterfile():
+        with open(path, "rb") as file:
+            while chunk := file.read(1024 * 512):  # Read in 512KB chunks
+                yield chunk
+
+    headers = {
+        "Content-Disposition": f'attachment; filename="{os.path.basename(path)}"',
+        "Content-Length": str(file_size),
+        "Accept-Ranges": "bytes"
+    }
+
+    return StreamingResponse(iterfile(), headers=headers, media_type="video/mp4")
 
 
 @app.get("/data/contestants")
@@ -116,12 +138,14 @@ def show_window():
 
 @app.on_event("startup")
 async def startup_event():
-    file_generation_thread = threading.Timer(0, show_window)
-    file_generation_thread.daemon = True
-    file_generation_thread.start()
+    #file_generation_thread = threading.Timer(0, show_window)
+    #file_generation_thread.daemon = True
+    #file_generation_thread.start()
 
-    loop = asyncio.get_running_loop()
-    loop.create_task(start_file_generation())
+    await generate_files()
+@app.get("/")
+async def root():
+    return Response(status_code=301, headers={"Location":"/home/assistant.html"})
 
 
 def start_server():

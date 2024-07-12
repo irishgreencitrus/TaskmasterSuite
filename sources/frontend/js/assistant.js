@@ -109,7 +109,7 @@ new Vue({
             })
             .catch(e => {})
             .then(() => {
-                setTimeout(() => this.loadTasks(), 1000)
+                setTimeout(() => this.loadTasks(), 60000)
             })
         },
         selectTask(taskId) {
@@ -137,7 +137,7 @@ new Vue({
             })
             .catch(e => {})
             .then(() => {
-                setTimeout(() => this.loadContestants(), 1000)
+                setTimeout(() => this.loadContestants(), 60000)
             })
         },
         loadGeneralFiles() {
@@ -152,7 +152,7 @@ new Vue({
             })
             .catch(e => {})
             .then(() => {
-                setTimeout(() => this.loadGeneralFiles(), 1000)
+                setTimeout(() => this.loadGeneralFiles(), 60000)
             })
         },
         loadScores() {
